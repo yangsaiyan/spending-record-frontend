@@ -23,7 +23,7 @@
 					>{$authTab === 0 ? 'Login' : 'Register'}</button
 				>
 				<div class="tooltip" data-tip="Click me to reset password">
-					<a class="link" href="/auth/reset-password">Forgot Password?</a>
+					<a class="link" href="/auth/reset">Forgot Password?</a>
 				</div>
 			</div>
 		</form>
