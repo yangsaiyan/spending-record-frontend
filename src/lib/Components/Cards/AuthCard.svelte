@@ -15,7 +15,7 @@
 
 	async function handleSubmit(e: Event) {
 		e.preventDefault();
-		console.log(formData);
+		console.log('formData', formData);
 		if ($authTab === 0) {
 			try {
 				const res = await useFetchPost(
