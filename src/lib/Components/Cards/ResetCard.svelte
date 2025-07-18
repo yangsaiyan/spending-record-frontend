@@ -1,4 +1,5 @@
 <script lang="ts">
+	// @ts-ignore
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import { goto } from '$app/navigation';
 	import { isShowingSteps, isLoading, isProcessDone, isResendOTP } from '$lib/store/store';
