@@ -4,6 +4,8 @@ function resolvePath(path: string) {
 			return '/auth/login';
 		case 'register':
 			return '/auth/register';
+		case 'me':
+			return '/user/me';
 		default:
 			return path;
 	}

@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { resolvePath } from './resolvePath';
 
+axios.defaults.withCredentials = true;
+
 function useFetchGet(params: any): Promise<any> {
 	return new Promise(async (resolve, reject) => {
 		try {
@@ -15,12 +17,13 @@ function useFetchGet(params: any): Promise<any> {
 	});
 }
 
-function useFetchPost(params: any): Promise<any> {
+function useFetchPost(params: any, options?: any): Promise<any> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const res = await axios.post(
 				import.meta.env.VITE_API_URL + resolvePath(params.method),
-				params.data
+				params.data,
+				options
 			);
 			resolve(res);
 		} catch (error) {

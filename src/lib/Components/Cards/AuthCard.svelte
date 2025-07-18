@@ -3,20 +3,35 @@
 	//utils
 	import { useFetchPost } from '$lib/utils/fetch';
 
+	let formData = $state({
+		email: '',
+		password: ''
+	});
+
+	function handleInput(e: Event) {
+		const target = e.target as HTMLInputElement;
+		formData[target.name as keyof typeof formData] = target.value;
+	}
+
 	async function handleSubmit(e: Event) {
 		e.preventDefault();
-		const formData = new FormData(e.target as HTMLFormElement);
-
+		console.log(formData);
 		if ($authTab === 0) {
 			try {
-				const res = await useFetchPost({ method: 'login', data: formData });
+				const res = await useFetchPost(
+					{ method: 'login', data: formData },
+					{ withCredentials: true }
+				);
 				console.log(res);
 			} catch (error) {
 				console.log(error);
 			}
 		} else {
 			try {
-				const res = await useFetchPost({ method: 'register', data: formData });
+				const res = await useFetchPost(
+					{ method: 'register', data: formData },
+					{ withCredentials: true }
+				);
 				console.log(res);
 			} catch (error) {
 				console.log(error);
@@ -30,15 +45,27 @@
 		<h2 class="card-title">
 			{$authTab === 0 ? 'Login' : 'Register'}
 		</h2>
-		<form on:submit={handleSubmit} class="flex flex-col gap-8">
+		<form onsubmit={handleSubmit} class="flex flex-col gap-8">
 			<div class="flex w-full flex-col gap-4">
 				<fieldset class="fieldset w-full">
 					<legend class="fieldset-legend">Email</legend>
-					<input type="text" class="input w-full" placeholder="Email" />
+					<input
+						type="text"
+						class="input w-full"
+						placeholder="Email"
+						bind:value={formData.email}
+						oninput={handleInput}
+					/>
 				</fieldset>
 				<fieldset class="fieldset w-full">
 					<legend class="fieldset-legend">Password</legend>
-					<input type="text" class="input w-full" placeholder="Password" />
+					<input
+						type="text"
+						class="input w-full"
+						placeholder="Password"
+						bind:value={formData.password}
+						oninput={handleInput}
+					/>
 				</fieldset>
 			</div>
 			<div class="flex w-full flex-col items-center justify-center">
