@@ -22,7 +22,9 @@
 					{ method: 'login', data: formData },
 					{ withCredentials: true }
 				);
-				console.log(res);
+				if (res.status === 201 && res.data.message === 'Logged in') {
+					window.location.href = '/';
+				}
 			} catch (error) {
 				console.log(error);
 			}
@@ -32,7 +34,9 @@
 					{ method: 'register', data: formData },
 					{ withCredentials: true }
 				);
-				console.log(res);
+				if (res.status === 201 && res.data.message === 'User registered') {
+					window.location.href = '/';
+				}
 			} catch (error) {
 				console.log(error);
 			}
