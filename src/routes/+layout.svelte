@@ -6,7 +6,7 @@
 	let { children } = $props();
 
 	onMount(async () => {
-		const res = await useFetchGet({ method: 'me' }, { withCredentials: true });
+		const res = await useFetchGet({ method: 'check-me' }, { withCredentials: true });
 		console.log(res);
 		// if (res.status === 200) {
 		// 	window.location.href = '/auto';

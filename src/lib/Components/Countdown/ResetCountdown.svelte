@@ -2,7 +2,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { isResendOTP } from '$lib/store/store';
 	let seconds = $state(0);
-	let minutes = $state(5);
+	let minutes = $state(10);
 	let interval: number;
 
 	function handleCountdown() {

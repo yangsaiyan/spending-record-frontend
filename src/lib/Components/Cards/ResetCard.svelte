@@ -2,49 +2,81 @@
 	// @ts-ignore
 	import { LottiePlayer } from '@lottiefiles/svelte-lottie-player';
 	import { goto } from '$app/navigation';
-	import { isShowingSteps, isLoading, isProcessDone, isResendOTP } from '$lib/store/store';
+	import {
+		isShowingSteps,
+		isLoading,
+		isProcessDone,
+		isResendOTP,
+		resetEmail
+	} from '$lib/store/store';
 	import ResetCountdown from '$lib/Components/Countdown/ResetCountdown.svelte';
-
+	import { useFetchPost } from '$lib/utils/fetch';
 	const SuccessLottie = '/Lotties/success.json';
 	let isVerified = false;
 	let isShowLottie = false;
+	let inputOTP = '';
 
-	function handleMockStep() {
+	async function handleMockStep() {
 		isLoading.set(true);
-		setTimeout(() => {
-			for (let i = 0; i < $isShowingSteps.length; i++) {
-				setTimeout(() => {
-					isShowingSteps.update((arr) => {
-						const copy = [...arr];
-						copy[i] = true;
-						return copy;
-					});
-				}, 1000 * i);
-			}
+		try {
 			setTimeout(() => {
-				$isLoading = false;
-				$isProcessDone = true;
-			}, 4000);
-		}, 1000);
-		isShowingSteps.set([false, false, false]);
+				isShowingSteps.set([true, false, false]);
+			}, 1000);
+			const res = await useFetchPost(
+				{ method: 'forgot-password', data: { email: $resetEmail } },
+				{ withCredentials: true }
+			);
+			setTimeout(() => {
+				isShowingSteps.set([true, true, false]);
+			}, 2000);
+			if (res.status === 201) {
+				setTimeout(() => {
+					isShowingSteps.set([true, true, true]);
+				}, 3000);
+				setTimeout(() => {
+					isLoading.set(false);
+					isShowingSteps.set([false, false, false]);
+					isProcessDone.set(true);
+				}, 4000);
+			}
+		} catch (error) {
+			console.log('error', error);
+		}
 	}
 
-	function handleVerifyOTP() {
-		isVerified = true;
-		isShowLottie = true;
-		setTimeout(() => {
-			isShowLottie = false;
-		}, 3000);
+	async function handleVerifyOTP() {
+		try {
+			await useFetchPost(
+				{ method: 'reset-password', data: { otp: inputOTP, email: $resetEmail } },
+				{ withCredentials: true }
+			);
+			isVerified = true;
+			isShowLottie = true;
+			setTimeout(() => {
+				isShowLottie = false;
+			}, 3000);
+		} catch (error) {
+			console.log('error', error);
+		}
 	}
 
 	function handleBackToLogin() {
 		isVerified = false;
 		$isProcessDone = false;
 		isShowLottie = false;
+		resetEmail.set('');
 		goto('/auth');
 	}
 
-	function handleResendOTP() {
+	async function handleResendOTP() {
+		try {
+			const res = await useFetchPost(
+				{ method: 'forgot-password', data: { email: $resetEmail } },
+				{ withCredentials: true }
+			);
+		} catch (error) {
+			console.log('error', error);
+		}
 		$isResendOTP = false;
 	}
 </script>
@@ -57,7 +89,7 @@
 				<div class="flex w-full flex-col gap-4">
 					<fieldset class="fieldset w-full">
 						<legend class="fieldset-legend">Email</legend>
-						<input type="text" class="input w-full" placeholder="Email" />
+						<input type="text" class="input w-full" placeholder="Email" bind:value={$resetEmail} />
 					</fieldset>
 				</div>
 				<div class="flex w-full flex-col items-center justify-center">
@@ -75,7 +107,7 @@
 				<div class="flex w-full flex-col gap-4">
 					<fieldset class="fieldset w-full">
 						<legend class="fieldset-legend">OTP</legend>
-						<input type="text" class="input w-full" placeholder="OTP" />
+						<input type="text" class="input w-full" placeholder="OTP" bind:value={inputOTP} />
 					</fieldset>
 				</div>
 				<div class="flex w-full flex-col items-center justify-center">

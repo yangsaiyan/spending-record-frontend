@@ -17,11 +17,11 @@ function useFetchGet(params: any, options?: any): Promise<any> {
 	});
 }
 
-function useFetchPost(params: any, options?: any): Promise<any> {
+function useFetchPost(params: any, options?: any, query?: string): Promise<any> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const res = await axios.post(
-				import.meta.env.VITE_API_URL + resolvePath(params.method),
+				import.meta.env.VITE_API_URL + resolvePath(params.method) + (query ? query : ''),
 				params.data,
 				options
 			);

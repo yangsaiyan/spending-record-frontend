@@ -10,5 +10,6 @@ export const isProcessDone = writable<boolean>(false);
 export const authTab = writable<number>(0);
 
 // /auth/reset
+export const resetEmail = writable<string>('');
 export const isShowingSteps = writable<boolean[]>([false, false, false]);
 export const isResendOTP = writable<boolean>(false);
