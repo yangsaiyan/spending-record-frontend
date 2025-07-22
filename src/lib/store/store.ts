@@ -1,8 +1,15 @@
 import { writable } from 'svelte/store';
 
 // {GLOBAL}
+export interface User {
+	email: string;
+}
+
+export const isAuthenticated = writable<boolean>(false);
+export const user = writable<User | null>(null);
 export const isLoading = writable<boolean>(false);
 export const isProcessDone = writable<boolean>(false);
+export const currentPage = writable<number>(0);
 
 // /auth
 // default 0 = login

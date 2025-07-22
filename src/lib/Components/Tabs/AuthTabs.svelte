@@ -11,7 +11,7 @@
 		class="absolute top-0 left-0 h-full rounded-lg bg-[#00ffa6cb] transition-transform duration-300 ease-in-out"
 		style="width: 50%; transform: translateX({$authTab * 100}%)"
 	></div>
-
+	
 	<input
 		type="radio"
 		name="auth_tabs"
