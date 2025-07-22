@@ -1,3 +1,4 @@
+import { RecordCategory, type Record } from '$lib/constants/record';
 import { writable } from 'svelte/store';
 
 // {GLOBAL}
@@ -20,3 +21,10 @@ export const authTab = writable<number>(0);
 export const resetEmail = writable<string>('');
 export const isShowingSteps = writable<boolean[]>([false, false, false]);
 export const isResendOTP = writable<boolean>(false);
+
+// /index
+export const newRecord = writable<Record>({
+	category: null,
+	amount: null,
+	description: '',
+});

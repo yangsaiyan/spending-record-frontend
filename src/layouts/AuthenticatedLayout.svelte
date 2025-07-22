@@ -8,7 +8,7 @@
 	});
 </script>
 
-<div class="flex h-screen flex-col items-center justify-start">
+<div class="w-full h-screen flex flex-col items-center justify-start">
 	<NavigationBar />
 	<slot />
 </div>

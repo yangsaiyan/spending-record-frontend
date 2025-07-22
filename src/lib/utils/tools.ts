@@ -1,3 +1,4 @@
+import { RecordCategory } from '$lib/constants/record';
 import { isAuthenticated, user } from '$lib/store/store';
 import { useFetchGet } from './fetch';
 
@@ -10,8 +11,8 @@ export async function checkAuth() {
 			if (window.location.pathname === '/auth') window.location.href = '/';
 		}
 	} catch (error) {
+		if (window.location.pathname !== '/auth') window.location.href = '/auth';
 		isAuthenticated.set(false);
-		window.location.href = '/auth';
 	}
 }
 
@@ -20,4 +21,15 @@ export function getCurrentPage(path: string): number {
 	if (path === '/history') return 1;
 	if (path === '/profile') return 2;
 	return 0;
+}
+
+export function convertCategoryToNumber(category: RecordCategory | null): number {
+	if (category === null) return 0;
+	return Object.values(RecordCategory).indexOf(category);
+}
+
+export function convertNumberToCategory(number: number): RecordCategory {
+	if (number === 0) return RecordCategory.OTHER;
+	if (!number) return RecordCategory.OTHER;
+	return Object.values(RecordCategory)[number];
 }

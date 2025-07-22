@@ -1,6 +1,8 @@
 function resolvePath(path: string) {
 	const splittedPath: string[] = path.split('_');
 
+	console.log(splittedPath);
+
 	switch (splittedPath[0]) {
 		// /auth
 		case 'auth':
@@ -36,7 +38,7 @@ function resolvePath(path: string) {
 				case 'delete':
 					return '/record/delete/:id';
 				case 'get-all':
-					return '/record/all';
+					return '/record/getAll';
 				case 'get-pagination':
 					return '/record/paginated';
 				case 'get-days':
