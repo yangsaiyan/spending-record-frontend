@@ -19,7 +19,7 @@
 		if ($authTab === 0) {
 			try {
 				const res = await useFetchPost(
-					{ method: 'login', data: formData },
+					{ method: 'auth_login', data: formData },
 					{ withCredentials: true }
 				);
 				if (res.status === 201 && res.data.message === 'Logged in') {
@@ -31,7 +31,7 @@
 		} else {
 			try {
 				const res = await useFetchPost(
-					{ method: 'register', data: formData },
+					{ method: 'auth_register', data: formData },
 					{ withCredentials: true }
 				);
 				if (res.status === 201 && res.data.message === 'User registered') {

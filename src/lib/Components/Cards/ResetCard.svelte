@@ -23,7 +23,7 @@
 				isShowingSteps.set([true, false, false]);
 			}, 1000);
 			const res = await useFetchPost(
-				{ method: 'forgot-password', data: { email: $resetEmail } },
+				{ method: 'auth_forgot-password', data: { email: $resetEmail } },
 				{ withCredentials: true }
 			);
 			setTimeout(() => {
@@ -47,7 +47,7 @@
 	async function handleVerifyOTP() {
 		try {
 			await useFetchPost(
-				{ method: 'reset-password', data: { otp: inputOTP, email: $resetEmail } },
+				{ method: 'auth_reset-password', data: { otp: inputOTP, email: $resetEmail } },
 				{ withCredentials: true }
 			);
 			isVerified = true;
@@ -71,7 +71,7 @@
 	async function handleResendOTP() {
 		try {
 			const res = await useFetchPost(
-				{ method: 'forgot-password', data: { email: $resetEmail } },
+				{ method: 'auth_forgot-password', data: { email: $resetEmail } },
 				{ withCredentials: true }
 			);
 		} catch (error) {

@@ -1,11 +1,12 @@
-import { isAuthenticated } from '$lib/store/store';
+import { isAuthenticated, user } from '$lib/store/store';
 import { useFetchGet } from './fetch';
 
 export async function checkAuth() {
 	try {
-		const res = await useFetchGet({ method: 'check-auth' }, { withCredentials: true });
+		const res = await useFetchGet({ method: 'user_check-auth' }, { withCredentials: true });
 		if (res.status === 200) {
 			isAuthenticated.set(true);
+			user.set({ email: res.data.email });
 			if (window.location.pathname === '/auth') window.location.href = '/';
 		}
 	} catch (error) {
