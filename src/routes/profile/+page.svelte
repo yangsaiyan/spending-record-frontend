@@ -7,17 +7,34 @@
 	let currentPassword = $state('');
 	let newPassword = $state('');
 
-	function handleResetPassword() {
-		console.log(currentPassword, newPassword);
+	async function handleResetPassword() {
+		try {
+			const res = await useFetchPost(
+				{
+					method: 'auth_self-reset-password',
+					data: {
+						email: $user?.email,
+						oldPassword: currentPassword,
+						password: newPassword
+					}
+				},
+				{ withCredentials: true }
+			);
+			if (res.status === 201) {
+				console.log(res);
+			}
+		} catch (error) {
+			console.error(error);
+		}
 	}
 
 	async function handleLogout() {
 		try {
-			const res = await useFetchPost({ method: 'auth_logout' });
+			const res = await useFetchPost({ method: 'auth_logout' }, { withCredentials: true });
 			console.log(res);
 			if (res.status === 201) {
 				isAuthenticated.set(false);
-				// window.location.href = '/auth';
+				window.location.href = '/auth';
 			}
 		} catch (error) {
 			console.error(error);

@@ -15,6 +15,8 @@ function resolvePath(path: string) {
 					return '/auth/forgot-password';
 				case 'reset-password':
 					return '/auth/reset-password';
+				case 'self-reset-password':
+					return '/auth/self-reset-password';
 				default:
 					return splittedPath[1];
 			}
