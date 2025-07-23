@@ -45,13 +45,12 @@
 			});
 			observer.observe(sentinel);
 		}
-		console.log(records);
 	}
 </script>
 
-<ul class="list bg-base-100 rounded-box max-h-[200px] w-full overflow-y-auto shadow-md">
+<ul class="list bg-base-100 rounded-box h-[25vh] w-full overflow-y-auto shadow-md">
 	{#each records as record}
-		<li class="list-row h-fit flex justify-between">
+		<li class="list-row flex h-fit justify-between">
 			<div class="flex flex-col gap-2">
 				<p>
 					{convertNumberToCategory(record.category)?.slice(0, 1).toUpperCase() +

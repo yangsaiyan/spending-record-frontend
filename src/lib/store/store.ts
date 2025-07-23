@@ -26,5 +26,9 @@ export const isResendOTP = writable<boolean>(false);
 export const newRecord = writable<Record>({
 	category: null,
 	amount: null,
-	description: '',
+	description: ''
 });
+export const top3TimeDays = writable<number>(7);
+export const currentFilter = writable<number>(0);
+export const categoriesTotal = writable<{ category: string; amount: number }[]>([]);
+export const totalSpent = writable<number>(0);

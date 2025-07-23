@@ -1,8 +1,6 @@
 function resolvePath(path: string) {
 	const splittedPath: string[] = path.split('_');
 
-	console.log(splittedPath);
-
 	switch (splittedPath[0]) {
 		// /auth
 		case 'auth':
@@ -40,13 +38,13 @@ function resolvePath(path: string) {
 				case 'get-all':
 					return '/record/getAll';
 				case 'get-pagination':
-					return '/record/paginated';
+					return '/record/paginated'; //query: /:page/:limit
 				case 'get-days':
-					return 'getDaysRecords/:days';
+					return '/record/getDaysRecords'; //query: /:days
 				case 'get-days-categories':
-					return '/record/getDaysTotalByCategory/:days';
+					return '/record/getDaysTotalByCategory'; //query: /:days
 				case 'get-by-description':
-					return '/record/findRecordByDescription/:description';
+					return '/record/findRecordByDescription'; //query: /:description
 				default:
 					return splittedPath[1];
 			}

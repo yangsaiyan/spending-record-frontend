@@ -6,6 +6,9 @@
 	import AddNewRecord from '$lib/Components/Buttons/AddNewRecord.svelte';
 	import RecordList from '$lib/Components/List/RecordList.svelte';
 	import ListFilter from '$lib/Components/Filter/ListFilter.svelte';
+	import { currentFilter, isLoading } from '$lib/store/store';
+	import StatList from '$lib/Components/List/StatList.svelte';
+	import FullLoading from '$lib/Components/Loading/FullLoading.svelte';
 </script>
 
 <AuthenticatedLayout>
@@ -16,8 +19,15 @@
 		</GeneralCard>
 		<GeneralCard>
 			<ListFilter />
-			<RecordList />
+			{#if $currentFilter === 1}
+				<RecordList />
+			{:else if $currentFilter === 2}
+				<StatList />
+			{/if}
 		</GeneralCard>
 		<AddNewRecord />
 	</div>
+	{#if $isLoading}
+		<FullLoading />
+	{/if}
 </AuthenticatedLayout>
