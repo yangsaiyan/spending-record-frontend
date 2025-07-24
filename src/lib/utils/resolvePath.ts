@@ -47,6 +47,8 @@ function resolvePath(path: string) {
 					return '/record/getDaysTotalByCategory'; //query: /:days
 				case 'get-by-description':
 					return '/record/findRecordByDescription'; //query: /:description
+				case 'get-filtered-records':
+					return '/record/getFilteredRecords'; //query: /:startDate/:endDate/:category/:description
 				default:
 					return splittedPath[1];
 			}

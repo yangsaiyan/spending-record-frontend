@@ -3,11 +3,11 @@ import { resolvePath } from './resolvePath';
 
 axios.defaults.withCredentials = true;
 
-function useFetchGet(params: any, options?: any, query?: string): Promise<any> {
+function useFetchGet(params: any, options?: any): Promise<any> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const res = await axios.get(
-				import.meta.env.VITE_API_URL + resolvePath(params.method) + (query ? query : ''),
+				import.meta.env.VITE_API_URL + resolvePath(params.method) + (params.query ? params.query : ''),
 				{
 					params: params.data,
 					...options
@@ -20,11 +20,11 @@ function useFetchGet(params: any, options?: any, query?: string): Promise<any> {
 	});
 }
 
-function useFetchPost(params: any, options?: any, query?: string): Promise<any> {
+function useFetchPost(params: any, options?: any): Promise<any> {
 	return new Promise(async (resolve, reject) => {
 		try {
 			const res = await axios.post(
-				import.meta.env.VITE_API_URL + resolvePath(params.method) + (query ? query : ''),
+				import.meta.env.VITE_API_URL + resolvePath(params.method) + (params.query ? params.query : ''),
 				params.data,
 				options
 			);

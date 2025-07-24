@@ -10,7 +10,7 @@
 		isLoading.set(true);
 		try {
 			value = $top3TimeDays;
-			const res = await useFetchGet({ method: 'record_get-days-categories' }, {}, `/${value}`);
+			const res = await useFetchGet({ method: 'record_get-days-categories', query: `/${value}` });
 			const sortedCategories = Object.entries(res.data).sort((a, b) => Number(b[1]) - Number(a[1]));
 			const categories = sortedCategories.map((item) => ({
 				category: convertNumberToCategory(Number(item[0])),

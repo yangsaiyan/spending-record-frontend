@@ -24,7 +24,7 @@
 	<a
 		class="z-10 w-1/3 px-4 py-1 text-center text-lg data-[active=true]:font-bold data-[active=true]:text-black"
 		data-active={$currentPage === 1}
-		href="/history">History</a
+		href="/search">Search</a
 	>
 	<a
 		class="z-10 w-1/3 px-4 py-1 text-center text-lg data-[active=true]:font-bold data-[active=true]:text-black"

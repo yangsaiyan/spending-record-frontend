@@ -20,9 +20,8 @@
 		}
 		try {
 			const res = await useFetchGet(
-				{ method: 'record_get-pagination', data: { page, limit } },
-				{ withCredentials: true },
-				`/${page}/${limit}`
+				{ method: 'record_get-pagination', data: { page, limit }, query: `/${page}/${limit}` },
+				{ withCredentials: true }
 			);
 			if (res.status === 200) {
 				records = [...records, ...res.data.records];

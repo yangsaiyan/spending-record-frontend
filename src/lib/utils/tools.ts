@@ -18,7 +18,7 @@ export async function checkAuth() {
 
 export function getCurrentPage(path: string): number {
 	if (path === '/') return 0;
-	if (path === '/history') return 1;
+	if (path === '/search') return 1;
 	if (path === '/profile') return 2;
 	return 0;
 }
