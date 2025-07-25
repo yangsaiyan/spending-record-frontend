@@ -11,11 +11,12 @@ export enum RecordCategory {
 	DEBT = 'debt',
 	INSURANCE = 'insurance',
 	TAX = 'tax',
-	OTHER = 'other'
+	OTHER = 'other',
+	NONE = ''
 }
 
 export interface Record {
-	category: RecordCategory | null;
+	category: RecordCategory;
 	amount: number | null;
 	description?: string;
 }

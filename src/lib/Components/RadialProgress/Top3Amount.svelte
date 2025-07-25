@@ -31,13 +31,13 @@
 	});
 </script>
 
-<div class="flex h-[30vh] w-full flex-col items-center justify-between gap-2">
+<div class="flex h-full max-h-[500px] w-full max-w-[1280px] flex-col items-center justify-between gap-2">
 	<p class="text-sm text-gray-500">Top 3 categories</p>
-	<div class="flex h-full w-full flex-row items-center justify-between gap-2">
+	<div class="flex h-full w-full flex-row items-center justify-center gap-2">
 		{#if $categoriesTotal.length > 2}
 			<div class="flex h-full w-full flex-col items-center">
 				<div
-					class="radial-progress mt-auto aspect-square h-auto min-h-[50px] w-full min-w-[50px] after:bg-transparent"
+					class="radial-progress mt-auto aspect-square h-auto min-h-[50px] w-full min-w-[50px] max-w-[150px] max-h-[150px] after:bg-transparent"
 					style="--value:{($categoriesTotal[1].amount / $totalSpent) * 100};"
 					aria-valuenow={$categoriesTotal[1].amount}
 					role="progressbar"
@@ -53,7 +53,7 @@
 			<div class="h-full w-full">
 				<div class="flex h-full w-full flex-col items-center justify-start">
 					<div
-						class="radial-progress aspect-square h-auto min-h-[50px] w-full min-w-[50px] after:bg-transparent"
+						class="radial-progress aspect-square h-auto min-h-[50px] w-full min-w-[50px] max-w-[150px] max-h-[150px] after:bg-transparent"
 						style="--value:{($categoriesTotal[0].amount / $totalSpent) * 100};"
 						aria-valuenow={$categoriesTotal[0].amount}
 						role="progressbar"
@@ -69,7 +69,7 @@
 			</div>
 			<div class="flex h-full w-full flex-col items-center">
 				<div
-					class="radial-progress mt-auto aspect-square h-auto min-h-[50px] w-full min-w-[50px] after:bg-transparent"
+					class="radial-progress mt-auto aspect-square h-auto min-h-[50px] w-full min-w-[50px] max-w-[150px] max-h-[150px] after:bg-transparent"
 					style="--value:{($categoriesTotal[2].amount / $totalSpent) * 100};"
 					aria-valuenow={$categoriesTotal[2].amount}
 					role="progressbar"

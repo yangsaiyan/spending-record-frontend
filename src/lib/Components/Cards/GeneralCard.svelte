@@ -1,5 +1,5 @@
-<div class="card glass h-fit w-9/10 bg-gray-950">
-	<div class="card-body">
+<div class="card glass h-full w-9/10 max-w-xl overflow-y-hidden rounded-xl bg-gray-950 xs:h-full">
+	<div class="card-body overflow-y-scroll">
 		<slot />
 	</div>
 </div>

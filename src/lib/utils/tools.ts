@@ -28,8 +28,11 @@ export function convertCategoryToNumber(category: RecordCategory | null): number
 	return Object.values(RecordCategory).indexOf(category);
 }
 
-export function convertNumberToCategory(number: number): RecordCategory {
+export function convertNumberToCategory(number: number): string {
 	if (number === 0) return RecordCategory.OTHER;
 	if (!number) return RecordCategory.OTHER;
-	return Object.values(RecordCategory)[number];
+	return (
+		Object.values(RecordCategory)[number].charAt(0).toUpperCase() +
+		Object.values(RecordCategory)[number].slice(1)
+	);
 }

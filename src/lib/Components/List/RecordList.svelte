@@ -47,7 +47,10 @@
 	}
 </script>
 
-<ul class="list bg-base-100 rounded-box h-[25vh] w-full overflow-y-auto shadow-md">
+<ul class="list bg-base-100 rounded-box h-full w-full overflow-y-auto shadow-md">
+	{#if records.length === 0}
+		<div class="skeleton bg-base-900 h-full w-full"></div>
+	{/if}
 	{#each records as record}
 		<li class="list-row flex h-fit justify-between">
 			<div class="flex flex-col gap-2">

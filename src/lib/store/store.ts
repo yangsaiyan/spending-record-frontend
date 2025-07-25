@@ -24,7 +24,7 @@ export const isResendOTP = writable<boolean>(false);
 
 // /index
 export const newRecord = writable<Record>({
-	category: null,
+	category: RecordCategory.NONE,
 	amount: null,
 	description: ''
 });
@@ -32,3 +32,16 @@ export const top3TimeDays = writable<number>(7);
 export const currentFilter = writable<number>(0);
 export const categoriesTotal = writable<{ category: string; amount: number }[]>([]);
 export const totalSpent = writable<number>(0);
+
+// /search
+export interface SearchRecord {
+	category: number;
+	date: string;
+	amount: number;
+	description: string;
+}
+
+export const searchRecords = writable<SearchRecord[]>([]);
+export const searchLimit = writable<number>(5);
+export const searchTotal = writable<number>(0);
+export const searchPage = writable<number>(1);

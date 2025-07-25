@@ -6,6 +6,7 @@
 	import { useFetchGet } from '$lib/utils/fetch';
 	import { convertCategoryToNumber } from '$lib/utils/tools';
 	import { slide } from 'svelte/transition';
+	import { searchRecords } from '$lib/store/store';
 
 	let page = 1;
 	let limit = 5;
@@ -103,6 +104,7 @@
 					{ method: 'record_get-pagination', data: { page, limit }, query: `/${page}/${limit}` },
 					{ withCredentials: true }
 				);
+				searchRecords.set(res.data.records);
 				console.log(res);
 			} catch (error) {
 				console.error(error);
@@ -212,18 +214,20 @@
 				</div>
 				<div class="flex w-4/5 flex-col items-start justify-center gap-1 pt-2">
 					{#each Object.values(RecordCategory) as category}
-						<label class="label flex flex-row items-center gap-2">
-							<input
-								type="checkbox"
-								class="checkbox"
-								value={category}
-								checked={currentFilter.category.includes(category)}
-								onchange={() => handleCategoryChange(category)}
-							/>
-							<span class="text-sm text-white"
-								>{category.charAt(0).toUpperCase() + category.slice(1)}</span
-							>
-						</label>
+						{#if category !== RecordCategory.NONE}
+							<label class="label flex flex-row items-center gap-2">
+								<input
+									type="checkbox"
+									class="checkbox"
+									value={category}
+									checked={currentFilter.category.includes(category)}
+									onchange={() => handleCategoryChange(category)}
+								/>
+								<span class="text-sm text-white"
+									>{category.charAt(0).toUpperCase() + category.slice(1)}</span
+								>
+							</label>
+						{/if}
 					{/each}
 				</div>
 			</GeneralCard>
