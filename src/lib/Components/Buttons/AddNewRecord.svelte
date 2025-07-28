@@ -2,7 +2,7 @@
 	import { RecordCategory } from '$lib/constants/record';
 	import { newRecord, showToast, toastMessage, toastType } from '$lib/store/store';
 	import { useFetchPost } from '$lib/utils/fetch';
-	import { convertCategoryToNumber } from '$lib/utils/tools';
+	import { addDays, convertCategoryToNumber } from '$lib/utils/tools';
 	import { Datepicker } from 'flowbite-svelte';
 
 	let addNewRecordModal: HTMLDialogElement | null = null;
@@ -10,16 +10,9 @@
 	let monthly = $state(false);
 	let selectedDate = $state(new Date());
 
-	function addDays(date: Date, days: number = 0): Date {
-		const result = new Date(date);
-		result.setDate(result.getDate() + days);
-		return result;
-	}
-
 	const availableTo = addDays(new Date());
 
 	async function addNewRecord() {
-		console.log(selectedDate);
 		try {
 			const recordData = {
 				...$newRecord,
@@ -102,7 +95,7 @@
 							class="w-full"
 							{availableTo}
 							onchange={() => {
-								$newRecord.date = selectedDate.toString();
+								$newRecord.date = selectedDate.toISOString();
 							}}
 						/>
 					{/if}

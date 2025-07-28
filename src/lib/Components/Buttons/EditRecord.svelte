@@ -2,14 +2,17 @@
 	import { RecordCategory } from '$lib/constants/record';
 	import { searchPage, showToast, toastMessage, toastType, triggerSearch } from '$lib/store/store';
 	import { useFetchPut } from '$lib/utils/fetch';
-	import { convertCategoryToNumber, convertNumberToCategory } from '$lib/utils/tools';
+	import { addDays, convertCategoryToNumber, convertNumberToCategory } from '$lib/utils/tools';
+	import { Datepicker } from 'flowbite-svelte';
 	const { record } = $props();
 	let editRecordModal: HTMLDialogElement | null = null;
 	let thisRecord = $state({
-		...record,	
+		...record,
 		category: convertNumberToCategory(record.category).toLowerCase(),
 		date: record.date.split('T')[0]
 	});
+	let availableTo = addDays(new Date());
+	let selectedDate = $state(new Date(thisRecord.date));
 
 	async function editRecord() {
 		console.log(thisRecord);
@@ -19,7 +22,8 @@
 					method: 'record_update',
 					data: {
 						...thisRecord,
-						category: convertCategoryToNumber(thisRecord.category as RecordCategory)
+						category: convertCategoryToNumber(thisRecord.category as RecordCategory),
+						date: `${selectedDate.getFullYear()}-${selectedDate.getMonth() + 1}-${selectedDate.getDate()}`
 					},
 					query: `/${record.id}`
 				},
@@ -71,7 +75,7 @@
 						placeholder="(Optional) Description"
 						bind:value={thisRecord.description}
 					/>
-					<input type="date" class="input input-bordered w-full" bind:value={thisRecord.date} />
+					<Datepicker bind:value={selectedDate} class="w-full" {availableTo} />
 					<button type="submit" class="btn btn-success">Save</button>
 					<button type="button" class="btn" onclick={() => editRecordModal?.close()}>Close</button>
 				</form>

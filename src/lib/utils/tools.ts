@@ -36,3 +36,9 @@ export function convertNumberToCategory(number: number): string {
 		Object.values(RecordCategory)[number - 1].slice(1)
 	);
 }
+
+export 	function addDays(date: Date, days: number = 0): Date {
+	const result = new Date(date);
+	result.setDate(result.getDate() + days);
+	return result;
+}
