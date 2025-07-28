@@ -1,4 +1,5 @@
 export enum RecordCategory {
+	NONE = '',
 	FOOD = 'food',
 	TRANSPORTATION = 'transportation',
 	HOUSING = 'housing',
@@ -12,13 +13,13 @@ export enum RecordCategory {
 	INSURANCE = 'insurance',
 	TAX = 'tax',
 	OTHER = 'other',
-	NONE = ''
 }
 
 export interface Record {
 	category: RecordCategory;
 	amount: number | null;
 	description?: string;
+	date: string;
 }
 
 export const record: Record[] = [];

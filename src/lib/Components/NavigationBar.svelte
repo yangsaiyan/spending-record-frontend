@@ -1,10 +1,14 @@
 <script>
-	import { currentPage } from '$lib/store/store';
+	import { currentPage, previousPage } from '$lib/store/store';
 	import { getCurrentPage } from '$lib/utils/tools';
-	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 
-	onMount(() => {
-		currentPage.set(getCurrentPage(window.location.pathname));
+	$effect(() => {
+		const newPage = getCurrentPage($page.url.pathname);
+		if (newPage !== $currentPage) {
+			previousPage.set($currentPage);
+			currentPage.set(newPage);
+		}
 	});
 </script>
 

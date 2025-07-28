@@ -6,12 +6,16 @@
 	import { useFetchGet } from '$lib/utils/fetch';
 	import { convertCategoryToNumber } from '$lib/utils/tools';
 	import { slide } from 'svelte/transition';
-	import { searchRecords } from '$lib/store/store';
+	import {
+		isLoading,
+		searchPage,
+		searchRecords,
+		searchTotalPages,
+		searchTotalRecords,
+		triggerSearch
+	} from '$lib/store/store';
 
-	let page = 1;
 	let limit = 5;
-	let total: number | null = null;
-	let isEnd: boolean = false;
 	let isFilterOpen = $state(false);
 	let currentFilter = $state<{
 		description: string;
@@ -52,7 +56,6 @@
 		searchParams.delete('startDate');
 		searchParams.delete('endDate');
 		window.history.pushState({}, '', `?${searchParams.toString()}`);
-		triggerSearch();
 	}
 
 	function handleSearchClick() {
@@ -83,7 +86,7 @@
 			searchParams.delete('to');
 		}
 		window.history.pushState({}, '', `?${searchParams.toString()}`);
-		triggerSearch();
+		performSearch($searchPage);
 	}
 
 	function handleSearchEnter(event: KeyboardEvent) {
@@ -92,33 +95,35 @@
 		}
 	}
 
-	async function triggerSearch() {
+	async function performSearch(page: number) {
+		searchParams.set('page', page.toString());
 		if (
+			$searchTotalPages &&
+			$searchTotalRecords &&
+			$searchTotalPages === Math.ceil($searchTotalRecords / (limit || 5)) &&
+			searchParams.get('page') === '1' &&
 			!searchParams.get('description') &&
 			!searchParams.get('category') &&
 			!searchParams.get('startDate') &&
 			!searchParams.get('endDate')
 		) {
-			try {
-				const res = await useFetchGet(
-					{ method: 'record_get-pagination', data: { page, limit }, query: `/${page}/${limit}` },
-					{ withCredentials: true }
-				);
-				searchRecords.set(res.data.records);
-				console.log(res);
-			} catch (error) {
-				console.error(error);
-			}
-		} else {
-			try {
-				const res = await useFetchGet({
-					method: 'record_get-filtered-records',
-					query: `?${searchParams}`
-				});
-				console.log(res);
-			} catch (error) {
-				console.error(error);
-			}
+			return;
+		}
+
+		try {
+			$isLoading = true;
+			const res = await useFetchGet({
+				method: 'record_get-filtered-records',
+				query: `?${searchParams}`
+			});
+			console.log(res);
+			searchRecords.set(res.data.records);
+			searchTotalPages.set(res.data.totalPages);
+			searchTotalRecords.set(res.data.totalRecords);
+		} catch (error) {
+			console.error(error);
+		} finally {
+			$isLoading = false;
 		}
 	}
 
@@ -134,11 +139,13 @@
 		currentFilter.date.to = searchParams.get('endDate')
 			? new Date(searchParams.get('endDate')!)
 			: undefined;
-		triggerSearch();
+		console.log('Page', searchParams.get('page'));
+		performSearch(Number(searchParams.get('page')) || 1);
+		triggerSearch.set(performSearch);
 	});
 </script>
 
-<div class="flex w-full flex-col items-center justify-center pt-2">
+<div class="relative flex w-full flex-col items-center justify-center pt-2">
 	<div class="mb-2 flex w-full flex-row items-center justify-center gap-2">
 		<label class="input h-fit w-4/5 rounded-full pr-0">
 			<input
@@ -191,7 +198,7 @@
 	</div>
 	{#if isFilterOpen}
 		<div
-			class="flex h-fit w-full flex-col items-center justify-center transition-all duration-300 ease-in-out"
+			class="absolute top-[50px] z-10 flex h-fit w-full flex-col items-center justify-center transition-all duration-300 ease-in-out"
 			transition:slide={{ duration: 500 }}
 		>
 			<GeneralCard>
@@ -224,7 +231,7 @@
 									onchange={() => handleCategoryChange(category)}
 								/>
 								<span class="text-sm text-white"
-									>{category.charAt(0).toUpperCase() + category.slice(1)}</span
+									>{category.slice(0, 1).toUpperCase() + category.slice(1)}</span
 								>
 							</label>
 						{/if}

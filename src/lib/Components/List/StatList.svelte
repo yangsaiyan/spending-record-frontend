@@ -12,7 +12,7 @@
 		<div class="badge badge-success">Other categories</div>
 		{#each $categoriesTotal.slice(3) as category}
 			<div class="flex h-fit w-full flex-col items-start justify-center gap-4">
-				<p class="text-sm text-gray-500">
+				<p class="text-sm text-white">
 					{category.category.slice(0, 1).toUpperCase() + category.category.slice(1)}
 				</p>
 				<p class="text-lg font-bold text-white">${category.amount}</p>

@@ -11,6 +11,10 @@ export const user = writable<User | null>(null);
 export const isLoading = writable<boolean>(false);
 export const isProcessDone = writable<boolean>(false);
 export const currentPage = writable<number>(0);
+export const previousPage = writable<number>(0);
+export const showToast = writable<boolean>(false);
+export const toastMessage = writable<string>('');
+export const toastType = writable<string>('');
 
 // /auth
 // default 0 = login
@@ -26,7 +30,8 @@ export const isResendOTP = writable<boolean>(false);
 export const newRecord = writable<Record>({
 	category: RecordCategory.NONE,
 	amount: null,
-	description: ''
+	description: '',
+	date: ''
 });
 export const top3TimeDays = writable<number>(7);
 export const currentFilter = writable<number>(0);
@@ -41,7 +46,10 @@ export interface SearchRecord {
 	description: string;
 }
 
+export const activeRecord = writable<number>(0);
 export const searchRecords = writable<SearchRecord[]>([]);
 export const searchLimit = writable<number>(5);
-export const searchTotal = writable<number>(0);
+export const searchTotalPages = writable<number>(0);
+export const searchTotalRecords = writable<number>(0);
 export const searchPage = writable<number>(1);
+export const triggerSearch = writable<((page: number) => Promise<void>) | null>(null);

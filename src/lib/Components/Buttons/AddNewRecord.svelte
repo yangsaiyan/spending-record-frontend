@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { RecordCategory } from '$lib/constants/record';
-	import { newRecord } from '$lib/store/store';
+	import { newRecord, showToast, toastMessage, toastType } from '$lib/store/store';
 	import { useFetchPost } from '$lib/utils/fetch';
 	import { convertCategoryToNumber } from '$lib/utils/tools';
 	import { Datepicker } from 'flowbite-svelte';
@@ -10,25 +10,49 @@
 	let monthly = $state(false);
 	let selectedDate = $state(new Date());
 
+	function addDays(date: Date, days: number = 0): Date {
+		const result = new Date(date);
+		result.setDate(result.getDate() + days);
+		return result;
+	}
+
+	const availableTo = addDays(new Date());
+
 	async function addNewRecord() {
+		console.log(selectedDate);
 		try {
+			const recordData = {
+				...$newRecord,
+				category: convertCategoryToNumber($newRecord.category),
+				date: isToday
+					? new Date().toISOString()
+					: `${selectedDate.getFullYear()}-${selectedDate.getMonth() + 1}-${selectedDate.getDate()}`
+			};
+
 			const res = await useFetchPost(
 				{
 					method: 'record_create',
-					data: { ...$newRecord, category: convertCategoryToNumber($newRecord.category) }
+					data: recordData
 				},
 				{ withCredentials: true }
 			);
 			if (res.status === 201) {
 				$newRecord = {
-					category: null,
-					amount: null,
-					description: ''
+					category: RecordCategory.NONE,
+					amount: 0,
+					description: '',
+					date: new Date().toISOString()
 				};
 				addNewRecordModal?.close();
+				toastMessage.set('Record added successfully');
+				toastType.set('success');
+				showToast.set(true);
 			}
 		} catch (error) {
 			console.log(error);
+			toastMessage.set('Error adding record');
+			toastType.set('error');
+			showToast.set(true);
 		}
 	}
 </script>
@@ -47,9 +71,11 @@
 					<select class="select select-neutral w-full" bind:value={$newRecord.category}>
 						<option disabled selected value={RecordCategory.NONE}>Select a category</option>
 						{#each Object.values(RecordCategory) as category}
-							<option value={category}
-								>{category.slice(0, 1).toUpperCase() + category.slice(1)}</option
-							>
+							{#if category !== RecordCategory.NONE}
+								<option value={category}
+									>{category.slice(0, 1).toUpperCase() + category.slice(1)}</option
+								>
+							{/if}
 						{/each}
 					</select>
 					<label class="input w-full">
@@ -71,7 +97,14 @@
 						Today
 					</label>
 					{#if !isToday}
-						<Datepicker bind:value={selectedDate} class="w-full" />
+						<Datepicker
+							bind:value={selectedDate}
+							class="w-full"
+							{availableTo}
+							onchange={() => {
+								$newRecord.date = selectedDate.toString();
+							}}
+						/>
 					{/if}
 					<button type="submit" class="btn btn-success">Add</button>
 					<button type="button" class="btn" onclick={() => addNewRecordModal?.close()}>Close</button

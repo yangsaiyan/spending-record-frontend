@@ -1,7 +1,7 @@
 <script>
 	import GeneralCard from '$lib/Components/Cards/GeneralCard.svelte';
 	import AuthenticatedLayout from '../../layouts/AuthenticatedLayout.svelte';
-	import { isAuthenticated, user } from '$lib/store/store';
+	import { isAuthenticated, showToast, toastMessage, toastType, user } from '$lib/store/store';
 	import { useFetchPost } from '$lib/utils/fetch';
 
 	let currentPassword = $state('');
@@ -21,23 +21,33 @@
 				{ withCredentials: true }
 			);
 			if (res.status === 201) {
-				console.log(res);
+				toastMessage.set('Password reset successfully');
+				toastType.set('success');
+				showToast.set(true);
 			}
 		} catch (error) {
 			console.error(error);
+			toastMessage.set('Error resetting password');
+			toastType.set('error');
+			showToast.set(true);
 		}
 	}
 
 	async function handleLogout() {
 		try {
 			const res = await useFetchPost({ method: 'auth_logout' }, { withCredentials: true });
-			console.log(res);
 			if (res.status === 201) {
+				toastMessage.set('Logged out successfully');
+				toastType.set('success');
+				showToast.set(true);
 				isAuthenticated.set(false);
 				window.location.href = '/auth';
 			}
 		} catch (error) {
 			console.error(error);
+			toastMessage.set('Error logging out');
+			toastType.set('error');
+			showToast.set(true);
 		}
 	}
 </script>

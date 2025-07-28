@@ -34,9 +34,9 @@ function resolvePath(path: string) {
 				case 'create':
 					return '/record/create';
 				case 'update':
-					return '/record/update/:id';
+					return '/record/update';
 				case 'delete':
-					return '/record/delete/:id';
+					return '/record/delete';
 				case 'get-all':
 					return '/record/getAll';
 				case 'get-pagination':

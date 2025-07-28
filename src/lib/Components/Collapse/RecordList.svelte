@@ -1,64 +1,111 @@
 <script lang="ts">
-	import { searchRecords, searchTotal } from '$lib/store/store';
+	import DeleteRecord from '$lib/Components/Buttons/DeleteRecord.svelte';
+	import EditRecord from '$lib/Components/Buttons/EditRecord.svelte';
+	import {
+		isLoading,
+		searchPage,
+		searchRecords,
+		searchTotalPages,
+		triggerSearch,
+		activeRecord
+	} from '$lib/store/store';
 	import { convertNumberToCategory } from '$lib/utils/tools';
 	import { onMount } from 'svelte';
-	let page = $state<number>(1);
 
-	function handlePreviousPage() {
+	let searchParams = $state<URLSearchParams>(new URLSearchParams());
+	let page = $state<number>($searchPage);
+
+	async function handlePreviousPage() {
+		$activeRecord = 0;
 		const searchParams = new URLSearchParams(window.location.search);
 		searchParams.set('page', (page - 1).toString());
 		window.history.pushState({}, '', `${window.location.pathname}?${searchParams.toString()}`);
+		$searchPage = page - 1;
+		$triggerSearch?.(page - 1);
+		page--;
 	}
 
-	function handleNextPage() {
+	async function handleNextPage() {
+		$activeRecord = 0;
 		const searchParams = new URLSearchParams(window.location.search);
 		searchParams.set('page', (page + 1).toString());
 		window.history.pushState({}, '', `${window.location.pathname}?${searchParams.toString()}`);
+		$searchPage = page + 1;
+		$triggerSearch?.(page + 1);
+		page++;
 	}
 
 	onMount(() => {
-		page = Number(new URLSearchParams(window.location.search).get('page')) || 1;
+		searchParams = new URLSearchParams(window.location.search);
+		if (searchParams.get('page')) {
+			page = Number(searchParams.get('page')) || 1;
+			$searchPage = page;
+		} else {
+			searchParams.set('page', '1');
+			window.history.pushState({}, '', `${window.location.pathname}?${searchParams.toString()}`);
+		}
 	});
 </script>
 
 <div class="flex w-9/10 flex-col gap-4 overflow-x-hidden overflow-y-scroll">
-	{#each $searchRecords as record}
-		<div class="text-black-content border-base-400 collapse w-full border-2 bg-transparent">
-			<input type="checkbox" class="peer" />
-			<div
-				class="collapse-title peer-checked:bg-success peer-checked:text-success-content flex flex-row items-center gap-2 font-semibold"
-			>
-				<span class="badge badge-success font-bold">{convertNumberToCategory(record.category)}</span
+	{#if $isLoading}
+		<div class="skeleton h-full min-h-12 w-full"></div>
+		<div class="skeleton h-full min-h-12 w-full"></div>
+		<div class="skeleton h-full min-h-12 w-full"></div>
+		<div class="skeleton h-full min-h-12 w-full"></div>
+		<div class="skeleton h-full min-h-12 w-full"></div>
+	{:else}
+		{#each $searchRecords as record, index}
+			<div class="text-black-content border-base-400 collapse w-full border-2 bg-transparent">
+				<input
+					type="checkbox"
+					checked={$activeRecord === index + 1}
+					class="peer"
+					onclick={() => ($activeRecord = index + 1)}
+				/>
+				<div
+					class="collapse-title peer-checked:bg-success peer-checked:text-success-content flex flex-row items-center gap-2 font-semibold"
 				>
-				- {record.date.split('T')[0]}
-			</div>
-			<div
-				class="collapse-content peer-checked:bg-success peer-checked:text-success-content flex flex-row justify-between pt-2 text-sm"
-			>
-				<div class="flex max-h-40 w-full flex-col items-start gap-2 text-wrap">
-					<p class="text-sm">${record.amount}</p>
-					<p class="line-clamp-4 overflow-hidden pr-3 text-sm text-ellipsis">
-						fake descriptionfakefake descriptionfakefake descriptionfakefake descriptionfakefake
-						descriptionfake descriptionfake descriptionfake descriptionfake descriptionfake
-						descriptionfake descriptionfake descriptionfake descriptionfake descriptionfake
-						descriptionfake description
-					</p>
+					<span class="badge badge-success font-bold"
+						>{convertNumberToCategory(record.category)}</span
+					>
+					- {record.date.split('T')[0]}
 				</div>
-				<div class="flex flex-col gap-2">
-					<button class="btn btn-sm btn-black h-10 font-bold">Edit</button>
-					<button class="btn btn-sm btn-error h-10 font-bold">Delete</button>
+				<div
+					class="collapse-content peer-checked:bg-success peer-checked:text-success-content flex flex-row justify-between pt-2 text-sm"
+				>
+					<div class="flex max-h-40 w-full flex-col items-start gap-2 text-wrap">
+						<p class="text-sm">${record.amount}</p>
+						<p class="line-clamp-4 overflow-hidden pr-3 text-sm text-ellipsis">
+							{record.description}
+						</p>
+					</div>
+					<div class="flex flex-col gap-2">
+						<EditRecord {record} />
+						<DeleteRecord {record} />
+					</div>
 				</div>
 			</div>
-		</div>
-	{/each}
+		{/each}
+		{#if $searchRecords.length === 0 && !$isLoading}
+			<div class="flex flex-col items-center justify-center">
+				<p class="text-center text-2xl font-bold">No records found</p>
+			</div>
+		{/if}
+	{/if}
 	<div class="join grid grid-cols-2">
 		<button
 			class="join-item btn btn-outline"
-			disabled={page === 1}
+			disabled={page === 1 || $isLoading || $searchRecords.length === 0 || $searchTotalPages === 0}
 			onclick={handlePreviousPage}>Previous</button
 		>
-		<button class="join-item btn btn-outline" disabled={page === $searchTotal} onclick={handleNextPage}
-			>Next</button
+		<button
+			class="join-item btn btn-outline"
+			disabled={page === $searchTotalPages ||
+				$isLoading ||
+				$searchRecords.length === 0 ||
+				$searchTotalPages === 0}
+			onclick={handleNextPage}>Next</button
 		>
 	</div>
 </div>

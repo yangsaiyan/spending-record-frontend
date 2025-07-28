@@ -7,6 +7,7 @@
 		email: '',
 		password: ''
 	});
+	let isLoading = $state(false);
 
 	function handleInput(e: Event) {
 		const target = e.target as HTMLInputElement;
@@ -15,9 +16,9 @@
 
 	async function handleSubmit(e: Event) {
 		e.preventDefault();
-		console.log('formData', formData);
 		if ($authTab === 0) {
 			try {
+				isLoading = true;
 				const res = await useFetchPost(
 					{ method: 'auth_login', data: formData },
 					{ withCredentials: true }
@@ -28,8 +29,10 @@
 			} catch (error) {
 				console.log(error);
 			}
+			isLoading = false;
 		} else {
 			try {
+				isLoading = true;
 				const res = await useFetchPost(
 					{ method: 'auth_register', data: formData },
 					{ withCredentials: true }
@@ -40,6 +43,7 @@
 			} catch (error) {
 				console.log(error);
 			}
+			isLoading = false;
 		}
 	}
 </script>
@@ -64,7 +68,7 @@
 				<fieldset class="fieldset w-full">
 					<legend class="fieldset-legend">Password</legend>
 					<input
-						type="text"
+						type="password"
 						class="input w-full"
 						placeholder="Password"
 						bind:value={formData.password}
@@ -73,12 +77,22 @@
 				</fieldset>
 			</div>
 			<div class="flex w-full flex-col items-center justify-center">
-				<button type="submit" class="btn btn-soft w-2/3 bg-[#00ffa6cb] text-black"
-					>{$authTab === 0 ? 'Login' : 'Register'}</button
+				<button
+					type="submit"
+					class="btn btn-soft w-2/3 bg-[#00ffa6cb] text-black"
+					disabled={isLoading}
 				>
-				<div class="tooltip" data-tip="Click me to reset password">
-					<a class="link" href="/auth/reset">Forgot Password?</a>
-				</div>
+					{#if isLoading}
+						<span class="loading loading-spinner loading-sm"></span>
+					{:else}
+						{$authTab === 0 ? 'Login' : 'Register'}
+					{/if}
+				</button>
+				{#if $authTab === 0}
+					<div class="tooltip" data-tip="Click me to reset password">
+						<a class="link" href="/auth/reset">Forgot Password?</a>
+					</div>
+				{/if}
 			</div>
 		</form>
 	</div>
