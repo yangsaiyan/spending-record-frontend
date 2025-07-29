@@ -37,8 +37,12 @@ export function convertNumberToCategory(number: number): string {
 	);
 }
 
-export 	function addDays(date: Date, days: number = 0): Date {
+export function addDays(date: Date, days: number = 0): Date {
 	const result = new Date(date);
 	result.setDate(result.getDate() + days);
 	return result;
+}
+
+export function dateFormat(date: Date): string {
+	return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 }

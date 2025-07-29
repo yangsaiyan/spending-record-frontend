@@ -2,7 +2,7 @@
 	import { RecordCategory } from '$lib/constants/record';
 	import { newRecord, showToast, toastMessage, toastType } from '$lib/store/store';
 	import { useFetchPost } from '$lib/utils/fetch';
-	import { addDays, convertCategoryToNumber } from '$lib/utils/tools';
+	import { addDays, convertCategoryToNumber, dateFormat } from '$lib/utils/tools';
 	import { Datepicker } from 'flowbite-svelte';
 
 	let addNewRecordModal: HTMLDialogElement | null = null;
@@ -17,9 +17,7 @@
 			const recordData = {
 				...$newRecord,
 				category: convertCategoryToNumber($newRecord.category),
-				date: isToday
-					? new Date().toISOString()
-					: `${selectedDate.getFullYear()}-${selectedDate.getMonth() + 1}-${selectedDate.getDate()}`
+				date: isToday ? new Date().toISOString() : dateFormat(selectedDate)
 			};
 
 			const res = await useFetchPost(

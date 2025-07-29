@@ -2,20 +2,26 @@
 	import { RecordCategory } from '$lib/constants/record';
 	import { searchPage, showToast, toastMessage, toastType, triggerSearch } from '$lib/store/store';
 	import { useFetchPut } from '$lib/utils/fetch';
-	import { addDays, convertCategoryToNumber, convertNumberToCategory } from '$lib/utils/tools';
+	import {
+		addDays,
+		convertCategoryToNumber,
+		convertNumberToCategory,
+		dateFormat
+	} from '$lib/utils/tools';
 	import { Datepicker } from 'flowbite-svelte';
+
 	const { record } = $props();
+
 	let editRecordModal: HTMLDialogElement | null = null;
 	let thisRecord = $state({
 		...record,
 		category: convertNumberToCategory(record.category).toLowerCase(),
-		date: record.date.split('T')[0]
+		date: new Date(record.date)
 	});
 	let availableTo = addDays(new Date());
 	let selectedDate = $state(new Date(thisRecord.date));
 
 	async function editRecord() {
-		console.log(thisRecord);
 		try {
 			const res = await useFetchPut(
 				{
@@ -23,7 +29,7 @@
 					data: {
 						...thisRecord,
 						category: convertCategoryToNumber(thisRecord.category as RecordCategory),
-						date: `${selectedDate.getFullYear()}-${selectedDate.getMonth() + 1}-${selectedDate.getDate()}`
+						date: dateFormat(selectedDate)
 					},
 					query: `/${record.id}`
 				},
@@ -37,7 +43,7 @@
 				$triggerSearch?.($searchPage);
 			}
 		} catch (error) {
-			console.log(error);
+			console.error(error);
 			toastMessage.set('Error updating record');
 			toastType.set('error');
 			showToast.set(true);

@@ -4,7 +4,7 @@
 	import GeneralCard from './Cards/GeneralCard.svelte';
 	import { Datepicker, P } from 'flowbite-svelte';
 	import { useFetchGet } from '$lib/utils/fetch';
-	import { convertCategoryToNumber } from '$lib/utils/tools';
+	import { convertCategoryToNumber, convertNumberToCategory, dateFormat } from '$lib/utils/tools';
 	import { slide } from 'svelte/transition';
 	import {
 		isLoading,
@@ -17,16 +17,18 @@
 
 	let limit = 5;
 	let isFilterOpen = $state(false);
+	let selectedFrom = $state<Date | undefined>(undefined);
+	let selectedTo = $state<Date | undefined>(undefined);
 	let currentFilter = $state<{
 		description: string;
-		category: RecordCategory[];
+		category: string[];
 		date: {
 			from: Date | undefined;
 			to: Date | undefined;
 		};
 	}>({
 		description: '',
-		category: [],
+		category: [] as string[],
 		date: {
 			from: undefined,
 			to: undefined
@@ -53,6 +55,8 @@
 	function handleResetCalendar() {
 		currentFilter.date.from = undefined;
 		currentFilter.date.to = undefined;
+		selectedFrom = undefined;
+		selectedTo = undefined;
 		searchParams.delete('startDate');
 		searchParams.delete('endDate');
 		window.history.pushState({}, '', `?${searchParams.toString()}`);
@@ -68,20 +72,22 @@
 		if (currentFilter.category.length > 0) {
 			searchParams.set(
 				'category',
-				currentFilter.category.map((category) => convertCategoryToNumber(category)).join(',')
+				currentFilter.category
+					.map((category) => convertCategoryToNumber(category as RecordCategory))
+					.join(',')
 			);
 		} else {
 			searchParams.delete('category');
 		}
 
-		if (currentFilter.date.from) {
-			searchParams.set('startDate', currentFilter.date.from.toISOString().split('T')[0]);
+		if (currentFilter.date.from || selectedFrom) {
+			searchParams.set('startDate', dateFormat(currentFilter.date.from || selectedFrom!));
 		} else {
 			searchParams.delete('from');
 		}
 
-		if (currentFilter.date.to) {
-			searchParams.set('endDate', currentFilter.date.to.toISOString().split('T')[0]);
+		if (currentFilter.date.to || selectedTo) {
+			searchParams.set('endDate', dateFormat(currentFilter.date.to || selectedTo!));
 		} else {
 			searchParams.delete('to');
 		}
@@ -116,7 +122,6 @@
 				method: 'record_get-filtered-records',
 				query: `?${searchParams}`
 			});
-			console.log(res);
 			searchRecords.set(res.data.records);
 			searchTotalPages.set(res.data.totalPages);
 			searchTotalRecords.set(res.data.totalRecords);
@@ -131,15 +136,19 @@
 		searchParams = new URLSearchParams(window.location.search);
 		currentFilter.description = searchParams.get('description') || '';
 		currentFilter.category = searchParams.get('category')
-			? (searchParams.get('category')?.split(',') as RecordCategory[])
+			? searchParams
+					.get('category')
+					?.split(',')
+					.map((category) => convertNumberToCategory(Number(category)).toLowerCase()) || []
 			: [];
-		currentFilter.date.from = searchParams.get('from')
-			? new Date(searchParams.get('startDate')!.split('T')[0])
+		currentFilter.date.from = searchParams.get('startDate')
+			? new Date(searchParams.get('startDate')!)
 			: undefined;
 		currentFilter.date.to = searchParams.get('endDate')
 			? new Date(searchParams.get('endDate')!)
 			: undefined;
-		console.log('Page', searchParams.get('page'));
+		selectedFrom = currentFilter.date.from;
+		selectedTo = currentFilter.date.to;
 		performSearch(Number(searchParams.get('page')) || 1);
 		triggerSearch.set(performSearch);
 	});
@@ -206,8 +215,8 @@
 					<div class="flex flex-row items-center justify-center gap-2">
 						<Datepicker
 							range
-							bind:rangeFrom={currentFilter.date.from}
-							bind:rangeTo={currentFilter.date.to}
+							bind:rangeFrom={selectedFrom}
+							bind:rangeTo={selectedTo}
 							onchange={() =>
 								handleDateChange({ from: currentFilter.date.from, to: currentFilter.date.to })}
 						/>
