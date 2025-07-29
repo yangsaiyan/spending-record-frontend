@@ -71,7 +71,7 @@
 					</select>
 					<label class="input w-full">
 						$
-						<input type="number" class="text" placeholder="Amount" bind:value={$newRecord.amount} />
+						<input type="text" class="text" placeholder="Amount" bind:value={$newRecord.amount} />
 					</label>
 					<input
 						type="text"

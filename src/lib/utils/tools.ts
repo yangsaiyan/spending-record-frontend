@@ -25,15 +25,14 @@ export function getCurrentPage(path: string): number {
 
 export function convertCategoryToNumber(category: RecordCategory | null): number {
 	if (category === null) return 0;
-	return Object.values(RecordCategory).indexOf(category) + 1;
+	return Object.values(RecordCategory).indexOf(category);
 }
 
 export function convertNumberToCategory(number: number): string {
-	if (number === 0) return RecordCategory.OTHER;
-	if (!number) return RecordCategory.OTHER;
+	if (!number || number < 0 || number === undefined) return RecordCategory.OTHER;
 	return (
-		Object.values(RecordCategory)[number - 1].slice(0, 1).toUpperCase() +
-		Object.values(RecordCategory)[number - 1].slice(1)
+		Object.values(RecordCategory)[number]?.slice(0, 1).toUpperCase() +
+			Object.values(RecordCategory)[number]?.slice(1) || RecordCategory.OTHER
 	);
 }
 

@@ -47,7 +47,9 @@
 	});
 </script>
 
-<div class="flex w-9/10 flex-col gap-4 overflow-x-hidden overflow-y-scroll">
+<div
+	class="flex h-full w-9/10 flex-col justify-between gap-4 overflow-x-hidden overflow-y-scroll py-3"
+>
 	{#if $isLoading}
 		<div class="skeleton h-full min-h-12 w-full"></div>
 		<div class="skeleton h-full min-h-12 w-full"></div>
@@ -55,38 +57,40 @@
 		<div class="skeleton h-full min-h-12 w-full"></div>
 		<div class="skeleton h-full min-h-12 w-full"></div>
 	{:else}
-		{#each $searchRecords as record, index}
-			<div class="text-black-content border-base-400 collapse w-full border-2 bg-transparent">
-				<input
-					type="checkbox"
-					checked={$activeRecord === index + 1}
-					class="peer"
-					onclick={() => ($activeRecord = index + 1)}
-				/>
-				<div
-					class="collapse-title peer-checked:bg-success peer-checked:text-success-content flex flex-row items-center gap-2 font-semibold"
-				>
-					<span class="badge badge-success font-bold"
-						>{convertNumberToCategory(record.category)}</span
+		<div class="flex h-full flex-col gap-2">
+			{#each $searchRecords as record, index}
+				<div class="text-black-content border-base-400 collapse w-full border-2 bg-transparent">
+					<input
+						type="checkbox"
+						checked={$activeRecord === index + 1}
+						class="peer"
+						onclick={() => ($activeRecord = index + 1)}
+					/>
+					<div
+						class="collapse-title peer-checked:bg-success peer-checked:text-success-content flex flex-row items-center gap-2 font-semibold"
 					>
-					- {record.date.split('T')[0]}
-				</div>
-				<div
-					class="collapse-content peer-checked:bg-success peer-checked:text-success-content flex flex-row justify-between pt-2 text-sm"
-				>
-					<div class="flex max-h-40 w-full flex-col items-start gap-2 text-wrap">
-						<p class="text-sm">${record.amount}</p>
-						<p class="line-clamp-4 overflow-hidden pr-3 text-sm text-ellipsis">
-							{record.description}
-						</p>
+						<span class="badge badge-success font-bold"
+							>{convertNumberToCategory(record.category)}</span
+						>
+						- {record.date.split('T')[0]}
 					</div>
-					<div class="flex flex-col gap-2">
-						<EditRecord {record} />
-						<DeleteRecord {record} />
+					<div
+						class="collapse-content peer-checked:bg-success peer-checked:text-success-content flex flex-row justify-between pt-2 text-sm"
+					>
+						<div class="flex max-h-40 w-full flex-col items-start gap-2 text-wrap">
+							<p class="text-sm">${record.amount}</p>
+							<p class="line-clamp-4 overflow-hidden pr-3 text-sm text-ellipsis">
+								{record.description}
+							</p>
+						</div>
+						<div class="flex flex-col gap-2">
+							<EditRecord {record} />
+							<DeleteRecord {record} />
+						</div>
 					</div>
 				</div>
-			</div>
-		{/each}
+			{/each}
+		</div>
 		{#if $searchRecords.length === 0 && !$isLoading}
 			<div class="flex flex-col items-center justify-center">
 				<p class="text-center text-2xl font-bold">No records found</p>
