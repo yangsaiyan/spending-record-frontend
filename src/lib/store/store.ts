@@ -15,6 +15,7 @@ export const previousPage = writable<number>(0);
 export const showToast = writable<boolean>(false);
 export const toastMessage = writable<string>('');
 export const toastType = writable<string>('');
+export const currency = writable<string>('NONE');
 
 // /auth
 // default 0 = login

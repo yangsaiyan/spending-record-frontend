@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { RecordCategory } from '$lib/constants/record';
-	import { newRecord, showToast, toastMessage, toastType } from '$lib/store/store';
+	import { currency, newRecord, showToast, toastMessage, toastType } from '$lib/store/store';
 	import { useFetchPost } from '$lib/utils/fetch';
 	import { addDays, convertCategoryToNumber, dateFormat } from '$lib/utils/tools';
 	import { Datepicker } from 'flowbite-svelte';
@@ -17,7 +17,8 @@
 			const recordData = {
 				...$newRecord,
 				category: convertCategoryToNumber($newRecord.category),
-				date: isToday ? new Date().toISOString() : dateFormat(selectedDate)
+				date: isToday ? new Date().toISOString() : dateFormat(selectedDate),
+				isMonthly: monthly
 			};
 
 			const res = await useFetchPost(
@@ -70,7 +71,7 @@
 						{/each}
 					</select>
 					<label class="input w-full">
-						$
+						{$currency}
 						<input type="text" class="text" placeholder="Amount" bind:value={$newRecord.amount} />
 					</label>
 					<input

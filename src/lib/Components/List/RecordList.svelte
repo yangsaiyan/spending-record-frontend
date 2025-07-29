@@ -47,7 +47,7 @@
 	}
 </script>
 
-<ul class="list bg-base-100 rounded-box h-full w-full overflow-y-auto shadow-md">
+<ul class="list bg-base-100 rounded-box h-full w-full overflow-y-auto shadow-md scrollbar-hide">
 	{#if records.length === 0}
 		<div class="skeleton bg-base-900 h-full w-full"></div>
 	{/if}
@@ -67,7 +67,7 @@
 		</li>
 		{#if records[records.length - 1] === record && !isEnd}
 			<li bind:this={sentinel} class="list-row flex min-h-16 w-full items-center justify-center">
-				<div class="skeleton h-full min-w-64"></div>
+				<div class="skeleton h-full min-w-64 w-full"></div>
 			</li>
 		{/if}
 	{/each}

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { categoriesTotal, isLoading, top3TimeDays, totalSpent } from '$lib/store/store';
+	import { categoriesTotal, currency, isLoading, top3TimeDays, totalSpent } from '$lib/store/store';
 	import { useFetchGet } from '$lib/utils/fetch';
 	import { convertNumberToCategory } from '$lib/utils/tools';
 
@@ -50,7 +50,10 @@
 				>{$categoriesTotal[1].category.slice(0, 1).toUpperCase() +
 					$categoriesTotal[1].category.slice(1)}</span
 			>
-			<span class="text-sm text-gray-500">${$categoriesTotal[1].amount}</span>
+			<span class="text-sm text-gray-500">
+				{$currency}
+				{$categoriesTotal[1].amount}
+			</span>
 		</div>
 		{/if}
 		{#if $categoriesTotal[0]}
@@ -68,7 +71,10 @@
 					>{$categoriesTotal[0].category.slice(0, 1).toUpperCase() +
 						$categoriesTotal[0].category.slice(1)}</span
 				>
-				<span class="text-sm text-gray-500">${$categoriesTotal[0].amount}</span>
+				<span class="text-sm text-gray-500">
+					{$currency}
+					{$categoriesTotal[0].amount}
+				</span>
 			</div>
 		</div>
 		{/if}
@@ -86,7 +92,10 @@
 				>{$categoriesTotal[2].category.slice(0, 1).toUpperCase() +
 					$categoriesTotal[2].category.slice(1)}</span
 			>
-				<span class="text-sm text-gray-500">${$categoriesTotal[2].amount}</span>
+				<span class="text-sm text-gray-500">
+					{$currency}
+					{$categoriesTotal[2].amount}
+				</span>
 			</div>
 		{/if}
 	</div>

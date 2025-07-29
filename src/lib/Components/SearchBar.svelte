@@ -211,8 +211,8 @@
 			transition:slide={{ duration: 500 }}
 		>
 			<GeneralCard>
-				<div class="md:w-1/2">
-					<div class="flex flex-row items-center justify-center gap-2">
+				<div class="flex w-full flex-col items-center justify-center gap-2">
+					<div class="flex w-full flex-row items-center justify-center gap-2">
 						<Datepicker
 							range
 							bind:rangeFrom={selectedFrom}
@@ -228,7 +228,9 @@
 						{currentFilter.date.to ? currentFilter.date.to.toLocaleDateString() : 'None'}
 					</P>
 				</div>
-				<div class="flex w-4/5 flex-col items-start justify-center gap-1 pt-2">
+				<div
+					class="flex w-full flex-col items-start justify-center gap-1 pt-2 md:flex-row md:flex-wrap md:gap-5"
+				>
 					{#each Object.values(RecordCategory) as category}
 						{#if category !== RecordCategory.NONE}
 							<label class="label flex flex-row items-center gap-2">

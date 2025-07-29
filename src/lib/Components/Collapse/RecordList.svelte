@@ -7,7 +7,8 @@
 		searchRecords,
 		searchTotalPages,
 		triggerSearch,
-		activeRecord
+		activeRecord,
+		currency
 	} from '$lib/store/store';
 	import { convertNumberToCategory } from '$lib/utils/tools';
 	import { onMount } from 'svelte';
@@ -78,7 +79,10 @@
 						class="collapse-content peer-checked:bg-success peer-checked:text-success-content flex flex-row justify-between pt-2 text-sm"
 					>
 						<div class="flex max-h-40 w-full flex-col items-start gap-2 text-wrap">
-							<p class="text-sm">${record.amount}</p>
+							<p class="text-sm">
+								{$currency}
+								{record.amount}
+							</p>
 							<p class="line-clamp-4 overflow-hidden pr-3 text-sm text-ellipsis">
 								{record.description}
 							</p>

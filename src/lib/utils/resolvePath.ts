@@ -49,6 +49,10 @@ function resolvePath(path: string) {
 					return '/record/findRecordByDescription'; //query: /:description
 				case 'get-filtered-records':
 					return '/record/getFilteredRecords'; //query: /:startDate/:endDate/:category/:description
+				case 'get-monthly-records':
+					return '/record/getMonthlyRecords';
+				case 'deactivate-monthly-record':
+					return '/record/deactivateMonthlyRecord'; //query: /:id
 				default:
 					return splittedPath[1];
 			}

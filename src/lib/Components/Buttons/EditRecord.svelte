@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { RecordCategory } from '$lib/constants/record';
-	import { searchPage, showToast, toastMessage, toastType, triggerSearch } from '$lib/store/store';
+	import { currency, searchPage, showToast, toastMessage, toastType, triggerSearch } from '$lib/store/store';
 	import { useFetchPut } from '$lib/utils/fetch';
 	import {
 		addDays,
@@ -72,7 +72,7 @@
 						{/each}
 					</select>
 					<label class="input w-full">
-						$
+						{$currency}
 						<input type="number" class="text" placeholder="Amount" bind:value={thisRecord.amount} />
 					</label>
 					<input
