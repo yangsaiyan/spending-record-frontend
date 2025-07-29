@@ -5,7 +5,7 @@
 
 	let records: any[] = [];
 	let page = 1;
-	let limit = 2;
+	let limit = 3;
 	let total: number | null = null;
 	let isEnd: boolean = false;
 

@@ -12,7 +12,7 @@ export enum RecordCategory {
 	DEBT = 'debt',
 	INSURANCE = 'insurance',
 	TAX = 'tax',
-	OTHER = 'other',
+	OTHER = 'other'
 }
 
 export interface Record {
