@@ -61,7 +61,7 @@
 				<p>{record.createdAt.split('T')[0]}</p>
 			</div>
 			<div class="flex flex-col gap-2">
-				<p class="text-end">${record.amount}</p>
+				<p class="text-end">{$currency}{record.amount}</p>
 				<p class="text-end">{record.description}</p>
 			</div>
 		</li>
