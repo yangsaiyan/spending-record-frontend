@@ -12,7 +12,9 @@
 </script>
 
 <AuthenticatedLayout>
-	<div class="flex h-full w-full flex-col items-center justify-start gap-4 sm:justify-center">
+	<div
+		class="flex h-full w-full max-h-[calc(100dvh-100px)] flex-col items-center justify-start gap-4 sm:justify-center"
+	>
 		<div
 			class="card flex h-full w-9/10 flex-col items-center justify-center gap-2 shadow-md shadow-black"
 		>
@@ -26,7 +28,7 @@
 		<div
 			class="card flex h-full w-9/10 flex-col items-center justify-center gap-2 shadow-md shadow-black"
 		>
-			<div class="card-body h-full max-h-[300px] w-full overflow-y-scroll">
+			<div class="card-body h-full w-full overflow-y-scroll">
 				<ListFilter />
 				{#if $currentFilter === 1}
 					<RecordList />

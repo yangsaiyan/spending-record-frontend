@@ -37,65 +37,72 @@
 	<p class="text-sm text-gray-500">Top 3 categories</p>
 	<div class="flex h-full w-full flex-row items-center justify-center gap-2">
 		{#if $categoriesTotal[1]}
-		<div class="flex h-full w-full flex-col items-center">
-			<div
-				class="radial-progress mt-auto aspect-square h-auto max-h-[150px] min-h-[50px] w-full max-w-[150px] min-w-[50px] after:bg-transparent"
-				style="--value:{($categoriesTotal[1].amount / $totalSpent) * 100};"
-				aria-valuenow={$categoriesTotal[1].amount}
-				role="progressbar"
-			>
-				{(($categoriesTotal[1].amount / $totalSpent) * 100).toFixed(2)}%
-			</div>
-			<span class="text-sm text-gray-500"
-				>{$categoriesTotal[1].category.slice(0, 1).toUpperCase() +
-					$categoriesTotal[1].category.slice(1)}</span
-			>
-			<span class="text-sm text-gray-500">
-				{$currency}
-				{$categoriesTotal[1].amount}
-			</span>
-		</div>
-		{/if}
-		{#if $categoriesTotal[0]}
-		<div class="h-full w-full">
-			<div class="flex h-full w-full flex-col items-center justify-start">
+			<div class="flex h-full w-full flex-col items-center gap-2">
 				<div
-					class="radial-progress aspect-square h-auto max-h-[150px] min-h-[50px] w-full max-w-[150px] min-w-[50px] after:bg-transparent"
-					style="--value:{($categoriesTotal[0].amount / $totalSpent) * 100};"
-					aria-valuenow={$categoriesTotal[0].amount}
+					class="radial-progress aspect-square h-auto max-h-[150px] min-h-[50px] w-full max-w-[150px] min-w-[50px] after:bg-transparent data-[row-length=true]:mt-auto"
+					style="--value:{($categoriesTotal[1].amount / $totalSpent) * 100};"
+					aria-valuenow={$categoriesTotal[1].amount}
+					data-row-length={$categoriesTotal.length > 2}
 					role="progressbar"
 				>
-					{(($categoriesTotal[0].amount / $totalSpent) * 100).toFixed(2)}%
+					{(($categoriesTotal[1].amount / $totalSpent) * 100).toFixed(2)}%
 				</div>
-				<span class="text-sm text-gray-500"
-					>{$categoriesTotal[0].category.slice(0, 1).toUpperCase() +
-						$categoriesTotal[0].category.slice(1)}</span
-				>
-				<span class="text-sm text-gray-500">
-					{$currency}
-					{$categoriesTotal[0].amount}
-				</span>
+				<div class="flex flex-col items-center">
+					<span class="text-sm text-gray-500"
+						>{$categoriesTotal[1].category.slice(0, 1).toUpperCase() +
+							$categoriesTotal[1].category.slice(1)}</span
+					>
+					<span class="text-sm text-gray-500">
+						{$currency}
+						{$categoriesTotal[1].amount}
+					</span>
+				</div>
 			</div>
-		</div>
+		{/if}
+		{#if $categoriesTotal[0]}
+			<div class="flex h-full w-full flex-col items-center gap-2">
+				<div class="flex h-full w-full flex-col items-center justify-start gap-2">
+					<div
+						class="radial-progress aspect-square h-auto max-h-[150px] min-h-[50px] w-full max-w-[150px] min-w-[50px] after:bg-transparent"
+						style="--value:{($categoriesTotal[0].amount / $totalSpent) * 100};"
+						aria-valuenow={$categoriesTotal[0].amount}
+						role="progressbar"
+					>
+						{(($categoriesTotal[0].amount / $totalSpent) * 100).toFixed(2)}%
+					</div>
+					<div class="flex flex-col items-center">
+						<span class="text-sm text-gray-500"
+							>{$categoriesTotal[0].category.slice(0, 1).toUpperCase() +
+								$categoriesTotal[0].category.slice(1)}</span
+						>
+						<span class="text-sm text-gray-500">
+							{$currency}
+							{$categoriesTotal[0].amount}
+						</span>
+					</div>
+				</div>
+			</div>
 		{/if}
 		{#if $categoriesTotal[2]}
-		<div class="flex h-full w-full flex-col items-center">
-			<div
-				class="radial-progress mt-auto aspect-square h-auto max-h-[150px] min-h-[50px] w-full max-w-[150px] min-w-[50px] after:bg-transparent"
-				style="--value:{($categoriesTotal[2].amount / $totalSpent) * 100};"
-				aria-valuenow={$categoriesTotal[2].amount}
-				role="progressbar"
-			>
-				{(($categoriesTotal[2].amount / $totalSpent) * 100).toFixed(2)}%
-			</div>
-			<span class="text-sm text-gray-500"
-				>{$categoriesTotal[2].category.slice(0, 1).toUpperCase() +
-					$categoriesTotal[2].category.slice(1)}</span
-			>
-				<span class="text-sm text-gray-500">
-					{$currency}
-					{$categoriesTotal[2].amount}
-				</span>
+			<div class="flex h-full w-full flex-col items-center gap-2">
+				<div
+					class="radial-progress mt-auto aspect-square h-auto max-h-[150px] min-h-[50px] w-full max-w-[150px] min-w-[50px] after:bg-transparent"
+					style="--value:{($categoriesTotal[2].amount / $totalSpent) * 100};"
+					aria-valuenow={$categoriesTotal[2].amount}
+					role="progressbar"
+				>
+					{(($categoriesTotal[2].amount / $totalSpent) * 100).toFixed(2)}%
+				</div>
+				<div class="flex flex-col items-center">
+					<span class="text-sm text-gray-500"
+						>{$categoriesTotal[2].category.slice(0, 1).toUpperCase() +
+							$categoriesTotal[2].category.slice(1)}</span
+					>
+					<span class="text-sm text-gray-500">
+						{$currency}
+						{$categoriesTotal[2].amount}
+					</span>
+				</div>
 			</div>
 		{/if}
 	</div>

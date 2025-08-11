@@ -2,7 +2,7 @@
 	import { categoriesTotal, currency, totalSpent } from '$lib/store/store';
 </script>
 
-<div class="flex h-[25vh] w-full flex-col items-center justify-start gap-4 overflow-y-auto scrollbar-hide">
+<div class="flex h-full w-full flex-col items-center justify-start gap-4 overflow-y-auto scrollbar-hide">
 	<div class="flex h-fit w-full flex-col items-start justify-center gap-2">
 		<div class="badge badge-success">Total spent</div>
 		<p class="text-lg font-bold text-white">
