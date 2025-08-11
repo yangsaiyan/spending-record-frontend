@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { useFetchGet } from '$lib/utils/fetch';
 	import { convertNumberToCategory } from '$lib/utils/tools';
+	import { currency } from '$lib/store/store';
 
 	let records: any[] = [];
 	let page = 1;
