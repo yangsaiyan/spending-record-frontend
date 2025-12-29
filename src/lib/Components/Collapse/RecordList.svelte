@@ -59,6 +59,11 @@
 		<div class="skeleton h-full min-h-12 w-full"></div>
 	{:else}
 		<div class="flex h-full flex-col gap-2">
+			{#if $searchRecords.length === 0 && !$isLoading}
+				<div class="flex h-full grow flex-col items-center justify-center">
+					<p class="text-center text-2xl font-bold">No records found</p>
+				</div>
+			{/if}
 			{#each $searchRecords as record, index}
 				<div class="text-black-content border-base-400 collapse w-full border-2 bg-transparent">
 					<input
@@ -95,11 +100,6 @@
 				</div>
 			{/each}
 		</div>
-		{#if $searchRecords.length === 0 && !$isLoading}
-			<div class="flex flex-col items-center justify-center">
-				<p class="text-center text-2xl font-bold">No records found</p>
-			</div>
-		{/if}
 	{/if}
 	<div class="join grid grid-cols-2">
 		<button
